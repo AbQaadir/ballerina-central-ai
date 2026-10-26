@@ -1,0 +1,1 @@
+A modern, conversational chat interface for discovering and exploring Ballerina packages through an AI-powered assistant. Built with React, TypeScript, and Tailwind CSS following WSO2 Choreo deployment patterns.

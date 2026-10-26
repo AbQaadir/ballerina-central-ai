@@ -1,0 +1,4 @@
+# Copy this file to Config.toml and provide your credentials
+geminiAPIKey = "YOUR_GOOGLE_GEMINI_API_KEY"
+geminiModel = "gemini-2.0-flash"
+mcpEndpoint = "http://localhost:9090/mcp"

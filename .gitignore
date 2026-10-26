@@ -1,0 +1,19 @@
+# Dependencies & build artifacts
+node_modules/
+dist/
+target/
+build/
+
+# Secrets & local configs
+.env
+.env.*
+!.env.example
+Config.toml
+public/config.js
+httpTrace/
+
+# OS & editor files
+.DS_Store
+.idea/
+.vscode/
+*.log

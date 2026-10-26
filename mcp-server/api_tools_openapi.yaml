@@ -1,0 +1,256 @@
+openapi: 3.0.1
+info:
+  title: Api Tools
+  version: 0.1.0
+servers:
+- url: "{server}:{port}/api/tools"
+  variables:
+    server:
+      default: http://localhost
+    port:
+      default: "9090"
+paths:
+  /searchBallerinaPackages:
+    post:
+      operationId: postSearchballerinapackages
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchPackagesRequest'
+        required: true
+      responses:
+        "200":
+          description: Ok
+        "400":
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorPayload'
+        "500":
+          description: InternalServerError
+  /getBallerinaPackageDetails:
+    post:
+      operationId: postGetballerinapackagedetails
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PackageInfoRequest'
+        required: true
+      responses:
+        "200":
+          description: Ok
+        "400":
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorPayload'
+        "500":
+          description: InternalServerError
+  /getAllModuleFunctions:
+    post:
+      operationId: postGetallmodulefunctions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AllFunctionsRequest'
+        required: true
+      responses:
+        "200":
+          description: Ok
+        "400":
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorPayload'
+        "500":
+          description: InternalServerError
+  /getAllModuleClasses:
+    post:
+      operationId: postGetallmoduleclasses
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AllClassesRequest'
+        required: true
+      responses:
+        "200":
+          description: Ok
+        "400":
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorPayload'
+        "500":
+          description: InternalServerError
+  /getDetailedClassInformation:
+    post:
+      operationId: postGetdetailedclassinformation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComprehensiveClassInfoRequest'
+        required: true
+      responses:
+        "200":
+          description: Ok
+        "400":
+          description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorPayload'
+        "500":
+          description: InternalServerError
+components:
+  schemas:
+    AllClassesRequest:
+      required:
+      - moduleName
+      - orgName
+      - version
+      type: object
+      properties:
+        orgName:
+          type: string
+        moduleName:
+          type: string
+        version:
+          type: string
+      additionalProperties: false
+      description: |-
+        Getting all classes information from Ballerina Central's GraphQL API
+        By using this function, you can retrieve detailed information about all classes in a specific module
+        orgName, moduleName, and version are required to identify the module.
+    AllFunctionsRequest:
+      required:
+      - moduleName
+      - orgName
+      - version
+      type: object
+      properties:
+        orgName:
+          type: string
+        moduleName:
+          type: string
+        version:
+          type: string
+      additionalProperties: false
+      description: |-
+        Getting all functions information from Ballerina Central's GraphQL API
+        By using this function, you can retrieve detailed information about all functions in a specific module
+        orgName, moduleName, and version are required to identify the module.
+    ComprehensiveClassInfoRequest:
+      required:
+      - className
+      - moduleName
+      - orgName
+      - version
+      type: object
+      properties:
+        orgName:
+          type: string
+        moduleName:
+          type: string
+        version:
+          type: string
+        className:
+          type: string
+      additionalProperties: false
+      description: "Getting comprehensive class information from Ballerina Central's\
+        \ GraphQL API\nBy using this function, you can retrieve information about\
+        \ a specific class\nincluding all fields with types and descriptions, and\
+        \ all methods with \nnames and descriptions.\norgName, moduleName, version,\
+        \ and className are required to identify the class."
+    ErrorPayload:
+      required:
+      - message
+      - method
+      - path
+      - reason
+      - status
+      - timestamp
+      type: object
+      properties:
+        timestamp:
+          type: string
+        status:
+          type: integer
+          format: int64
+        reason:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+        method:
+          type: string
+    PackageInfoRequest:
+      required:
+      - moduleName
+      - orgName
+      - version
+      type: object
+      properties:
+        orgName:
+          type: string
+        moduleName:
+          type: string
+        version:
+          type: string
+      additionalProperties: false
+      description: Request type for getting package information
+    SearchPackagesRequest:
+      required:
+      - searchQuery
+      type: object
+      properties:
+        searchQuery:
+          type: string
+      additionalProperties: false
+      description: |-
+        Search Ballerina packages in Ballerina Central
+        By using this function, you can search for Ballerina packages in Ballerina Central.
+
+        Search by packages
+        You can search for packages containing the search text in the package name, organization, keywords, or README file.
+
+        Searching by symbols
+        You can search for a symbol by its name across all packages. A symbol can be a record, class, client, function, method, constant, variable, type, or field.
+
+        Search syntax
+        - Search by package name
+        kafka
+        package:kafka
+
+        - Search packages in an organization(s)
+        ballerinax/kafka
+        org:ballerinax package:kafka
+        org:ballerina,ballerinax,wso2 package:kafka
+
+        - Search for all the packages in an organization(s)
+        org:ballerina
+        org:ballerinax
+        org:wso2
+        org:ballerina,ballerinax,wso2
+
+        - Search by a keyword
+        keyword:time
+        keyword:"Cost/Free"
+        keyword:"Communication/Team Chat"
+
+        - Exclude terms
+        sms -twilio
+        google -drive
+
+        - Search with boolean operators
+        security AND encryption
+        sms AND keyword:"Freemium"
